@@ -45,4 +45,4 @@ team.get('/team', (ctx, next) => {
 })
 
 
-module.exports = { team, project};
+module.exports = { team, project };
