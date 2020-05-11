@@ -1,8 +1,6 @@
 var Router = require('koa-router');
 
-const team = new Router({
-    prefix: '/api/v1'
-});
+const team = new Router();
 const project = new Router();
 
 const tasks = new Router();
@@ -30,21 +28,21 @@ var taskList = [
      next();
  });
 
-
+//!roomUniqueID:matrix.org
  project.use('/project/:pid', tasks.routes(), tasks.allowedMethods())
 
  project.get('/project', (ctx, next) => {
+     
      ctx.body = "project";
      next();
  });
  
 
-team.use('/team/:tid', project.routes(), project.allowedMethods())
-
+ //+matrix:matrix.org
 team.get('/team', (ctx, next) => {
     ctx.body = "heello";
     next();
 })
 
 
-module.exports = team;
+module.exports = { team, project};
