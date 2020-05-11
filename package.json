@@ -1,0 +1,18 @@
+{
+  "name": "vaugress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.11.0",
+    "koa-body": "^4.1.1",
+    "koa-router": "^8.0.8",
+    "matrix-bot-sdk": "^0.5.3",
+    "mongodb": "^3.5.7"
+  }
+}
