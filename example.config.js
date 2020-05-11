@@ -1,6 +1,4 @@
-module.exports = {
-    bot_login:{
-        user: "USERID", 
-        password: "hunter2"
-    }
-}
+export const bot_login = {
+    user: "USERID",
+    password: "hunter2"
+};

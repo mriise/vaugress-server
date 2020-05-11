@@ -1,7 +1,7 @@
 {
-  "name": "vaugress",
+  "name": "vaugress-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "watches a matrix room for special events to update Mongodb, and a read-only API with Koa",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"

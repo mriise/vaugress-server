@@ -1,6 +1,9 @@
 var koa = require('koa');
 var bodyParser = require('koa-body');
 var api = require('./api.js');
+var client = require('./matrix.js')
+
+
 
 var app = new koa();
 
@@ -14,6 +17,9 @@ app.use(bodyParser({
 app.use(api.routes());
 
 app.listen(3000);
+
+
+// To listen for room messages (m.room.message) only:
 
 
 // var MongoClient = require('mongodb').MongoClient;
