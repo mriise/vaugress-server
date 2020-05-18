@@ -7,7 +7,7 @@ Track team projects using Matrix
 - matrix for write change events from users 
 
 ## Definitions
-Matrix room = MongoDB collection = Vuagress project
+`Matrix room = MongoDB collection = Vuagress project`
 I will use "project" to refrence this level of abstraction
 
 ## How things work
