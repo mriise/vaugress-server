@@ -1,10 +1,11 @@
 import koa from 'koa'
 import {team, project} from './api'
-import client from './matrix'
-import { ConsoleLogger } from 'matrix-bot-sdk';
-// import { LogService, RichConsoleLogger, LogLevel } from 'matrix-bot-sdk';
+import CommandHandler from './commands/handler'
+// import client from './matrix'
+// import { ConsoleLogger } from 'matrix-bot-sdk';
+import { LogService, RichConsoleLogger, LogLevel } from 'matrix-bot-sdk';
 
-client
+CommandHandler
 
 var app = new koa();
 
@@ -13,8 +14,8 @@ app.use(project.routes());
 app.listen(3000);
 // console.log('started')
 
-// LogService.setLogger(new RichConsoleLogger());
-// LogService.setLevel(LogLevel.DEBUG);
+LogService.setLogger(new RichConsoleLogger());
+LogService.setLevel(LogLevel.INFO);
 
 // var MongoClient = require('mongodb').MongoClient;
 // var url = "mongodb://localhost:27017/mydb";
