@@ -1,4 +1,7 @@
 import { LogService, MatrixClient, MessageEvent, RichReply, UserID } from "matrix-bot-sdk";
+import { Connection, Mongoose } from "mongoose";
+import { TaskController } from "../controllers/TaskController";
+import { createTask } from "./create";
 const htmlEscape = require("escape-html");
 
 // The prefix required to trigger the bot. The bot will also respond
@@ -14,12 +17,18 @@ export default class CommandHandler {
     private userId: string;
     private localpart: string;
 
-    constructor(private client: MatrixClient) { }
+    private connection: Connection;
+    private mongoose: Promise<typeof import("mongoose")>;
+
+    constructor(private client: MatrixClient, private connectionURI: string) {
+        this.mongoose = new Mongoose().connect(connectionURI, {useNewUrlParser: true});
+    }
 
     public async start() {
         // Populate the variables above (async)
         await this.prepareProfile();
 
+        this.connection = (await this.mongoose).connection
         // Set up the event handler
         this.client.on("room.message", this.onMessage.bind(this));
     }
@@ -38,10 +47,12 @@ export default class CommandHandler {
     }
 
     private async onMessage(roomId: string, ev: any) {
+        
         const event = new MessageEvent(ev);
         if (event.isRedacted) return; // Ignore redacted events that come through
-        if (event.sender === this.userId) return; // Ignore ourselves
+        // if (event.sender === this.userId) return; // Ignore ourselves
         if (event.messageType !== "m.text") return; // Ignore non-text messages
+        LogService.info('command', event.textBody)
 
         // Ensure that the event is a command before going on. We allow people to ping
         // the bot as well as using our COMMAND_PREFIX.
@@ -54,18 +65,22 @@ export default class CommandHandler {
 
         // Try and figure out what command the user ran, defaulting to help
         try {
-            if (args[0] === "hello") {
-                // return runHelloCommand(roomId, event, args, this.client);
-            } else {
-                const help = "" +
-                    `${COMMAND_PREFIX}create [user]     - Say hello to a user.\n` +
-                    `${COMMAND_PREFIX}help             - This menu\n`;
+            switch (args[0]) {
+                case 'create':
+                    return createTask(ev, args, this.client, this.connection.collection(roomId))
+                    
+            
+                default:
+                    const help = "" +
+                    `${COMMAND_PREFIX}create [title] [conetent] - creates a new task.\n` +
+                    `${COMMAND_PREFIX}complete [title]          - creates a new task.\n` +
+                    `${COMMAND_PREFIX}help                      - This menu\n`;
 
-                const text = `Help menu:\n${help}`;
-                const html = `<b>Help menu:</b><br /><pre><code>${htmlEscape(help)}</code></pre>`;
-                const reply = RichReply.createFor(roomId, ev, text, html); // Note that we're using the raw event, not the parsed one!
-                reply["msgtype"] = "m.notice"; // Bots should always use notices
-                return this.client.sendMessage(roomId, reply);
+                    const text = `Help menu:\n${help}`;
+                    const html = `<b>Help menu:</b><br /><pre><code>${htmlEscape(help)}</code></pre>`;
+                    const reply = RichReply.createFor(roomId, ev, text, html); // Note that we're using the raw event, not the parsed one!
+                    reply["msgtype"] = "m.notice"; // Bots should always use notices
+                    return this.client.sendMessage(roomId, reply);
             }
         } catch (e) {
             // Log the error

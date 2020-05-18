@@ -23,13 +23,15 @@
     "koa": "^2.11.0",
     "koa-router": "^8.0.8",
     "matrix-bot-sdk": "^0.5.3",
-    "mongodb": "^3.5.7"
+    "mongodb": "^3.5.7",
+    "mongoose": "^5.9.14"
   },
   "devDependencies": {
     "@types/escape-html": "^1.0.0",
     "@types/koa": "^2.11.3",
     "@types/koa-router": "^2.11.3",
     "@types/mongodb": "^3.5.17",
+    "@types/mongoose": "^5.7.20",
     "@types/node": "^7.4.1",
     "tslint": "^6.1.2",
     "typescript": "^3.9.2"
