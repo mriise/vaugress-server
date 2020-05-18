@@ -1,21 +1,35 @@
 {
   "name": "vaugress-server",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "author": "Mark Riise",
   "description": "watches a matrix room for special events to update Mongodb, and a read-only API with Koa",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "keywords": [
+    "matrix",
+    "bot"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mriise/vaugress-server.git"
+  },
   "scripts": {
-    "start": "npm run-script build && node ./lib/index.js",
+    "start": "npm run build && node lib/index.js",
+    "lint": "tslint --project ./tsconfig.json -t stylish",
     "build": "tsc"
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
+    "escape-html": "^1.0.3",
     "koa": "^2.11.0",
     "koa-router": "^8.0.8",
     "matrix-bot-sdk": "^0.5.3",
     "mongodb": "^3.5.7"
   },
   "devDependencies": {
-    "@types/koa-router": "^7.4.1"
+    "@types/koa": "^2.11.3",
+    "@types/koa-router": "^2.11.3",
+    "@types/node": "^7.4.1",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.2"
   }
 }

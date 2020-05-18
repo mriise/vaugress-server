@@ -8,11 +8,9 @@
       "noImplicitAny": false,
       "sourceMap": false,
       "outDir": "./lib",
-      "declaration": true,
       "esModuleInterop": true,
       "types": [
-        "node",
-        "koa",
+        "node"
       ]
     },
     "include": [
