@@ -7,13 +7,6 @@ var client = require('./matrix.js')
 
 var app = new koa();
 
-//Set up body parsing middleware
-app.use(bodyParser({
-   formidable:{uploadDir: './uploads'},
-   multipart: true,
-   urlencoded: true
-}));
-
 // app.use(team.routes());
 app.use(project.routes());
 
