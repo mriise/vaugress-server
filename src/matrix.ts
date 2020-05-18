@@ -1,19 +1,24 @@
-const AutojoinRoomsMixin = require("matrix-bot-sdk").AutojoinRoomsMixin;
-const MatrixAuth = require("matrix-bot-sdk").MatrixAuth;
-const CreateEvent = require("matrix-bot-sdk").CreateEvent;
+import { MatrixAuth, MatrixClient, AutojoinRoomsMixin } from "matrix-bot-sdk";
+import * as config from '../config.js';
 
-var config = require("./config.js")
 const NAMESPACE = 'app.vaugress'
+var prefix = ';'
 
 const client = new MatrixAuth("https://matrix.org").passwordLogin(config.bot_login.user, config.bot_login.password)
 
-const createTask = (roomId, content) => {
-    client.sendEvent(roomId, NAMESPACE + '.create', content);
-}
 
-client.then( (client) => {
+
+client.then( (client :MatrixClient) => {
+    
+    const createTask = (roomId :string, content :object) => {
+        client.sendEvent(roomId, NAMESPACE + '.create', content);
+    }
+    
+    const getTaskID = (roomId) => {
+    
+    }
+
     AutojoinRoomsMixin.setupOnClient(client);
-    client.add
     client.on("room.message", (roomId, event) => {
         if (!event["content"]) return;
 
@@ -21,19 +26,11 @@ client.then( (client) => {
         const body = event["content"]["body"];
         console.log(sender + " says " + body);
         
-        if(body.startsWith("test")){
+        if(body.startsWith(prefix + "create")){
             const content = {
                 body: `${(Math.random() * 1000000).toFixed(0)} updated by ${sender}`,
             }
-            const eventID = client.sendEvent(roomId, NAMESPACE + '.create', content);
-
-            eventID.then( id => {
-                console.log(`event sent ID: ${id}`)
-                client.sendNotice(roomId, `${sender} started test ID: ${id}`);
-            }).catch(err => {
-                console.error("ERR:" + err);
-            })
-
+            createTask(roomId, content);
         }
 
         // if (body.startsWith("!echo")) {
@@ -44,9 +41,21 @@ client.then( (client) => {
     });
 
     client.on('room.event', (roomId, event) => {
+        const type = event["type"];
+        if(type.startsWith(NAMESPACE)) {
+            const operation = type.replace(NAMESPACE + '.', '');
+            const sourceJSON = JSON.stringify(event['content'], undefined, 2);
 
-        if(event["type"] == NAMESPACE + '.create'){
-            client.sendNotice(roomId, `${sender} said: ${replyText}`);
+            const replyHTML = `<p>vaugress <code>${operation}</code> event</p><code>${sourceJSON}</code>`;
+            client.replyText(roomId, event, sourceJSON, replyHTML);
+
+            switch (operation) {
+                case 'create':
+                    break;
+
+                default:
+                    break;
+            }
         }
         
     });
@@ -60,3 +69,5 @@ client.then( (client) => {
     client.start().then(() => console.log("Client started!"));
 
 })
+
+export default client;

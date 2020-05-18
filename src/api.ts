@@ -1,5 +1,4 @@
-var Router = require('koa-router');
-
+import Router from 'koa-router';
 const team = new Router();
 const project = new Router();
 
@@ -45,4 +44,4 @@ team.get('/team', (ctx, next) => {
 })
 
 
-module.exports = { team, project };
+export { team, project };

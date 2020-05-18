@@ -1,15 +1,12 @@
-var koa = require('koa');
-var bodyParser = require('koa-body');
-var {team, project} = require('./api.js');
-var client = require('./matrix.js')
+import koa from 'koa'
+import {team, project} from './api'
+import client from './matrix'
 
-
-
+client
 var app = new koa();
 
 // app.use(team.routes());
 app.use(project.routes());
-
 app.listen(3000);
 
 
