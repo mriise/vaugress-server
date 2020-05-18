@@ -14,7 +14,7 @@ app.use(bodyParser({
    urlencoded: true
 }));
 
-app.use(team.routes());
+// app.use(team.routes());
 app.use(project.routes());
 
 app.listen(3000);
